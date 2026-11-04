@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Susanne Harlow – Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+  /* ============ COLORS & FONT: change these ============ */
+  :root {
+    --bg: #f7f7f5;
+    --ink: #1a1a1f;
+    --muted: #6c6c75;
+    --accent: #2b3fe0;
+    --line: #dcdcd6;
+    --font: "Bricolage Grotesque", "Helvetica Neue", Arial, sans-serif;
+  }
+  
+
+  /* ===================================================== */
+  * { box-sizing: border-box; margin: 0; }
+  body { background: var(--bg); color: var(--ink); font-family: var(--font); line-height: 1.5; }
+  a { color: inherit; }
+  a:hover, button:hover { color: var(--accent); }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+  .wrap { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+
+  header { display: flex; justify-content: space-between; padding: 24px 0; }
+  nav a { margin-left: 24px; text-decoration: none; }
+  .hero { padding: 12vh 0 8vh; }
+  .hero h1 { font-size: clamp(3rem, 11vw, 9rem); font-weight: 800; line-height: .95; letter-spacing: -0.04em; }
+  .hero p { margin-top: 24px; max-width: 34ch; font-size: 1.25rem; color: var(--muted); }
+
+  .filters { margin: 0 0 24px; display: flex; gap: 8px; flex-wrap: wrap; }
+  .filters button { font: inherit; background: none; border: 1px solid var(--ink); border-radius: 99px; padding: 4px 16px; cursor: pointer; color: var(--ink); }
+  .filters button[aria-pressed="true"] { background: var(--ink); color: var(--bg); }
+
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 32px 24px; }
+  .card { background: none; border: 0; padding: 0; text-align: left; font: inherit; color: inherit; cursor: pointer; }
+  .thumb { aspect-ratio: 4 / 5; background: var(--c, #ddd); overflow: hidden; position: relative; }
+  .thumb img { width: 100%; height: 100%; object-fit: contain; object-position: top; display: block; transition: transform .4s; }
+  .card:hover .thumb img { transform: scale(1.03); }
+  .tag { position: absolute; top: 12px; left: 12px; background: var(--bg); color: var(--ink); font-size: .85rem; padding: 2px 10px; border-radius: 99px; }
+  .card h3 { margin-top: 12px; font-size: 1.15rem; font-weight: 600; }
+  .card span { color: var(--muted); font-size: .95rem; }
+
+  section { padding: 12vh 0 4vh; }
+  h2 { font-size: 1rem; font-weight: 600; color: var(--muted); margin-bottom: 16px; }
+  .about { display: grid; grid-template-columns: 1fr 2fr; gap: 24px; }
+  .about p { font-size: 1.5rem; max-width: 40ch; }
+  .contact a { font-size: clamp(1.5rem, 5vw, 3.5rem); font-weight: 600; text-decoration: none; letter-spacing: -0.02em; }
+  footer { padding: 12vh 0 32px; color: var(--muted); font-size: .9rem; }
+
+  /* ---------- case study ---------- */
+  dialog { border: 0; padding: 0; width: min(960px, 96vw); max-height: 94vh; background: var(--bg); color: var(--ink); }
+  dialog::backdrop { background: rgba(20,20,25,.6); }
+  .detail { padding: 32px; }
+  .close { float: right; font: inherit; background: none; border: 0; cursor: pointer; }
+  .detail h3 { font-size: clamp(2rem, 5vw, 3.2rem); line-height: 1.05; letter-spacing: -0.03em; max-width: 18ch; }
+  .intro { font-size: 1.25rem; max-width: 46ch; margin: 16px 0 24px; }
+  .facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 16px; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); padding: 16px 0; margin-bottom: 40px; }
+  .facts dt { color: var(--muted); font-size: .9rem; }
+  .facts dd { margin: 0; font-weight: 600; }
+  .block { margin-bottom: 40px; }
+  .block h4 { font-size: 1.4rem; margin-bottom: 8px; letter-spacing: -0.01em; }
+  .block p { max-width: 60ch; margin-bottom: 12px; }
+  .block ul { max-width: 60ch; padding-left: 20px; }
+  .block li { margin-bottom: 6px; }
+  .media { width: 100%; background: var(--c, #e4e4df); aspect-ratio: var(--r, 16 / 10); display: grid; place-items: center; color: var(--muted); font-size: .9rem; text-align: center; padding: 12px; }
+  .media img, .media video { width: 100%; height: 100%; object-fit: contain; display: block; background: #e4e4df; }
+  figure { margin: 0; }
+  figcaption { color: var(--muted); font-size: .9rem; margin-top: 8px; }
+  .row { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; }
+  .ba { max-width: 700px; }
+  .ba .media { --r: 9 / 16; }
+  .btn { display: inline-block; border: 1px solid var(--ink); border-radius: 99px; padding: 8px 20px; text-decoration: none; }
+  .btn:hover { background: var(--ink); color: var(--bg); }
+
+  @media (max-width: 700px) { .about { grid-template-columns: 1fr; } .detail { padding: 20px; } }
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <strong id="logo"></strong>
+    <nav><a href="#work">Work</a><a href="#about">About</a><a href="#contact">Contact</a></nav>
+  </header>
+  <div class="hero">
+    <h1 id="name"></h1>
+    <p id="tagline"></p>
+  </div>
+  <main id="work">
+    <div class="filters" id="filters"></div>
+    <div class="grid" id="grid"></div>
+  </main>
+  <section id="about" class="about">
+    <h2>About</h2>
+    <p id="bio"></p>
+  </section>
+  <section id="contact" class="contact">
+    <h2>Contact</h2>
+    <a id="email"></a>
+    <p id="links" style="margin-top:16px"></p>
+  </section>
+  <footer id="footer"></footer>
+</div>
+<dialog id="modal"></dialog>
+
+<script>
+/* =====================================================
+   EDIT YOUR CONTENT HERE. You don't need to touch
+   anything below this block.
+
+   FILES: make a folder called "assets" next to this file
+   and put your images and videos in it. Then write the
+   path, e.g. "assets/peterson-before.png".
+   If a path is left as "", the page shows a gray
+   placeholder with a label telling you what to add.
+
+   VIDEO: use .mp4 (a .mov may not play in every browser).
+   Keep each video under ~10 MB.
+
+   Anything in [brackets] is a blank for you to fill in.
+   ===================================================== */
+const SITE = {
+  name: "Susanne Harlow",
+  tagline: "Graphic and UX/UI designer. Branding, web, and editorial.",
+  bio: "I’m a UX designer studying at Purdue University and looking for internship opportunities. Previously at Media Fuel, I redesigned the mobile shopping flow for Peterson and designed a website for Thursday Poles.",
+  email: "harlow8@purdue.edu",
+  links: [
+    { label: "Instagram", url: "https://www.instagram.com/susie_.harlow?xtok=MWpvZWNtcjhrdmdvdg%3D%3D&utm_source=qr" },
+    { label: "LinkedIn",  url: "www.linkedin.com/in/susanne-harlow-987948330" }
+  ],
+  year: "2026"
+};
+
+/* Block types you can use inside "sections":
+   { type:"text",  heading:"...", body:"paragraphs separated by a blank line" }
+   { type:"list",  heading:"...", items:["...", "..."] }
+   { type:"images", heading:"...", items:[{src:"", caption:"", label:"what to add"}] }
+   { type:"beforeafter", heading:"...", before:{src:"", caption:""}, after:{src:"", caption:""} }
+   { type:"video", heading:"...", src:"", caption:"" }
+   { type:"link",  label:"View the live site", url:"https://..." }
+*/
+const PROJECTS = [
+  {
+    title: "Peterson mobile shop redesign",
+    tag: "Internship",
+    category: "UX/UI",
+    year: "2025",
+    color: "#c9d3ff",
+    image: "Images/PetersonScreen.jpg",   
+    summary: "I redesigned the mobile shopping flow for Peterson, a heavy-duty trailer lighting and harness brand, so products are easier to find and the buttons and text feel consistent.",
+    facts: [
+      ["Role", "Graphic design intern"],
+      ["Company", "MediaFuel"],
+      ["Scope", "Mobile Marketplace"],
+      ["Tools", "Figma"]
+    ],
+    sections: [
+      { type: "text", heading: "The problem",
+        body: "On a phone, shopping felt like searching endlessly for a product you’d never find. Most of the user flow didn’t make sense, and the interface lacked basic consistency: red buttons changed size from screen to screen, body text shrank awkwardly beside large headings, and the swipe carousel blocked important links while distracting from key copy." },
+      { type: "list", heading: "What I did",
+        items: [
+          "Audited the mobile experience screen by screen and noted issues with hierarchy, spacing, and button size.",
+          "Redesigned the mobile shop flow: browsing, product pages, and calls to action.",
+          "Made buttons, headings, and body text consistent across the flow.",
+          "Replaced the swipe carousel with a simple vertical scroll so nothing covers the links."
+        ] },
+      { type: "beforeafter", heading: "Before and after",
+        before: { src: "./Images/petersonbefore.jpg", caption: "Before" },
+        after:  { src: "./Images/peterson.jpg", caption: "After" } },
+      { type: "text", heading: "What I learned",
+        body: "I learned the value of backing up design choices with real user research, studying patterns that already work, and keeping every screen and component feeling unified." },
+      { type: "link", label: "Visit the live shop", url: "https://petersonlightsandharness.com/product/" }
+    ]
+  },
+  {
+    title: "Thursday Poles website",
+    tag: "Internship",
+    category: "Web design",
+    year: "2025",
+    color: "#f2c9c0",
+    image: "Images/ThursdayScreen.jpg",
+    summary: "I designed and built the Thursday Poles website in Divi Builder.",
+    facts: [
+      ["Role", "Web designer"],
+      ["Company", "[MediaFuel"],
+      ["Tools", "Divi Builder"],
+      ["Pages", "Home, Shop, About"]
+    ],
+    sections: [
+{ type: "video", heading: "Site walkthrough", src: "Images/FullVideo.mp4", caption: "Scrolling through the finished site." },      { type: "text", heading: "The brief",
+        body: "Thursday Poles is a sister company of Thursday Pools who specialize in making fiberglass poles. They wanted a site with a strong brand identity and a streamlined product discovery experience. " },
+      { type: "list", heading: "What I did",
+        items: [
+          "Designed the layout and visual style in Divi Builder.",
+          "Built the page structure using existing branding and logos.",
+  
+        ] },
+    
+      { type: "link", label: "Visit the site", url: "https://thursdaypoles.com" }
+    ]
+  },
+  {
+    title: "Personal project",
+    tag: "Student Organization",
+    category: "Branding",
+    year: "2026",
+    color: "#d9d6c8",
+    image: "Images/aiga.jpg",
+    summary: "llustrated a callout poster for AIGA, using diagram-style linework of a rotary phone to recruit student creatives across engineering and design majors.",
+    facts: [["Role", "Social Media Manager"], ["Tools", "Illustrator"]],
+    sections: [
+      { type: "images", items: [{ src: "Images/aiga.jpg", caption: "Callout Poster", }] }
+    ]
+  }
+];
+/* ================ END OF EDITABLE CONTENT ============== */
+
+const $ = id => document.getElementById(id);
+const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+
+document.title = SITE.name + " – Portfolio";
+$("logo").textContent = SITE.name;
+$("name").textContent = SITE.name;
+$("tagline").textContent = SITE.tagline;
+$("bio").textContent = SITE.bio;
+$("email").textContent = SITE.email;
+$("email").href = "mailto:" + SITE.email;
+$("links").innerHTML = SITE.links.map(l => `<a href="${esc(l.url)}" target="_blank" rel="noopener">${esc(l.label)}</a>`).join(" &nbsp; ");
+$("footer").textContent = "© " + SITE.year + " " + SITE.name;
+
+let active = "All";
+const cats = ["All", ...new Set(PROJECTS.map(p => p.category))];
+
+function renderFilters() {
+  $("filters").innerHTML = cats.map(c => `<button aria-pressed="${c === active}" data-c="${esc(c)}">${esc(c)}</button>`).join("");
+  $("filters").querySelectorAll("button").forEach(b => b.onclick = () => { active = b.dataset.c; renderFilters(); renderGrid(); });
+}
+
+function renderGrid() {
+  const list = PROJECTS.map((p, i) => ({ p, i })).filter(({ p }) => active === "All" || p.category === active);
+  $("grid").innerHTML = list.map(({ p, i }) => `
+    <button class="card" data-i="${i}">
+      <div class="thumb" style="--c:${esc(p.color || "#ddd")}">
+        ${p.image ? `<img src="${esc(p.image)}" alt="${esc(p.title)}">` : ""}
+        ${p.tag ? `<span class="tag">${esc(p.tag)}</span>` : ""}
+      </div>
+      <h3>${esc(p.title)}</h3>
+      <span>${esc(p.category)}, ${esc(p.year)}</span>
+    </button>`).join("");
+  $("grid").querySelectorAll(".card").forEach(c => c.onclick = () => openProject(PROJECTS[c.dataset.i]));
+}
+
+/* media helpers: show the file if there is one, else a labeled placeholder */
+const isVideo = s => /\.(mp4|webm|mov)$/i.test(s);
+function media(item, fallback) {
+  if (!item.src) return `<div class="media">${esc(item.label || fallback)}</div>`;
+  return `<div class="media">${isVideo(item.src)
+    ? `<video src="${esc(item.src)}" controls playsinline preload="metadata"></video>`
+    : `<img src="${esc(item.src)}" alt="${esc(item.caption || "")}">`}</div>`;
+}
+const fig = (item, fallback) => `<figure>${media(item, fallback)}${item.caption ? `<figcaption>${esc(item.caption)}</figcaption>` : ""}</figure>`;
+const head = b => b.heading ? `<h4>${esc(b.heading)}</h4>` : "";
+
+function block(b) {
+  switch (b.type) {
+    case "text": return `<div class="block">${head(b)}${String(b.body).split(/\n\s*\n/).map(t => `<p>${esc(t)}</p>`).join("")}</div>`;
+    case "list": return `<div class="block">${head(b)}<ul>${b.items.map(i => `<li>${esc(i)}</li>`).join("")}</ul></div>`;
+    case "images": return `<div class="block">${head(b)}<div class="row">${b.items.map(i => fig(i, "Add an image")).join("")}</div></div>`;
+    case "beforeafter": return `<div class="block">${head(b)}<div class="row ba">${fig({ label: "Add the before screenshot", ...b.before }, "")}${fig({ label: "Add the after screenshot", ...b.after }, "")}</div></div>`;
+    case "video": return `<div class="block">${head(b)}${fig({ src: b.src, caption: b.caption, label: "Add a video (.mp4)" }, "")}</div>`;
+    case "link": return `<div class="block"><a class="btn" href="${esc(b.url)}" target="_blank" rel="noopener">${esc(b.label)}</a></div>`;
+    default: return "";
+  }
+}
+
+function openProject(p) {
+  $("modal").innerHTML = `<div class="detail">
+    <button class="close" aria-label="Close">Close</button>
+    <h3>${esc(p.title)}</h3>
+    <p class="intro">${esc(p.summary)}</p>
+    <dl class="facts">${(p.facts || []).map(([k, v]) => `<div><dt>${esc(k)}</dt><dd>${esc(v)}</dd></div>`).join("")}</dl>
+    ${(p.sections || []).map(block).join("")}
+  </div>`;
+  $("modal").querySelector(".close").onclick = () => $("modal").close();
+  $("modal").showModal();
+  $("modal").scrollTop = 0;
+}
+$("modal").addEventListener("click", e => { if (e.target === $("modal")) $("modal").close(); });
+
+renderFilters();
+renderGrid();
+</script>
+</body>
+</html>
